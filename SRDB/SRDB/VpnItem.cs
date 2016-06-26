@@ -15,6 +15,8 @@ namespace SRDB
 
         public string Host { get; set; }
 
+        public string Group { get; set; }
+
         public string Descript { get; set; }
 
         public string User { get; set; }
@@ -26,13 +28,25 @@ namespace SRDB
             Id = Guid.NewGuid().ToString();
         }
 
-        public VpnItem(string host, string descript, string user, string passwd)
+        public VpnItem(string host, string group, string descript, string user, string passwd)
         {
             Host = host;
+            Group = group;
             Descript = descript;
             User = user;
             Password = passwd;
             Id = Guid.NewGuid().ToString();
         }
+
+        public VpnItem(string guid, string host, string group, string descript, string user, string passwd)
+        {
+            Id = guid;
+            Host = host;
+            Group = group;
+            Descript = descript;
+            User = user;
+            Password = passwd;            
+        }
+
     }
 }

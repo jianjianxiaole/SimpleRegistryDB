@@ -58,7 +58,7 @@ namespace UnitTestProject1
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            //testDb.DeleteGroup(Group);
+            testDb.DeleteGroup(Group);
         }
         //
         #endregion
@@ -66,7 +66,9 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestDb()
         {
-            testDb.AddGroup(Group, "This is a test group");
+            if (!testDb.HasGroup(Group))
+                testDb.AddGroup(Group, "This is a test group");
+            testDb.Add(new VpnItem("127.0.0.1", Group, "test host", "123", "123"), Group);
             testDb.Add(new VpnItem("127.0.0.1", Group, "test host", "123", "123"), Group);
         }
     }

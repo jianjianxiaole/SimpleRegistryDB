@@ -44,9 +44,25 @@ namespace SRDB
         {
             DbName = name;
             rootKey = Registry.CurrentUser.CreateSubKey(rootKeyName, true);
-            using (var dbkey = rootKey.CreateSubKey(DbName))
+            if (!rootKey.GetSubKeyNames().Contains(DbName))
             {
-                dbkey.SetValue("CreateTime", DateTime.UtcNow.ToLongTimeString(), RegistryValueKind.String);
+                using (var dbkey = rootKey.CreateSubKey(DbName))
+                {
+                    dbkey.SetValue("CreateTime", DateTime.UtcNow.ToLongTimeString(), RegistryValueKind.String);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 当前db下是否包含一个组
+        /// </summary>
+        /// <param name="gruop"></param>
+        /// <returns></returns>
+        public bool HasGroup(string gruop)
+        {
+            using (ReadOnlyDbRoot)
+            {
+                return ReadOnlyDbRoot.GetSubKeyNames().Contains(gruop);
             }
         }
 
@@ -106,6 +122,7 @@ namespace SRDB
             
         }
 
+        
         
 
         public void Update(VpnItem item, string group)
@@ -193,6 +210,12 @@ namespace SRDB
                 vlist.AddRange(Get(g));
                 return vlist;
             }
+        }
+
+
+        public void Close()
+        {
+            rootKey.Close();
         }
 
         #region private
